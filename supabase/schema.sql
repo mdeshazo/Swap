@@ -1,4 +1,5 @@
--- Swap backend for Supabase. Review, then run in the Supabase SQL editor (once).
+-- Swap backend for Supabase. This is the version already applied to the live project
+-- as migration "swap_initial_schema". Run it once on any new project.
 -- Safe to read top to bottom: tables, row level security, storage, moderation, account deletion.
 
 ------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ begin
   return new;
 end;
 $$;
+revoke all on function public.handle_new_user() from public, anon, authenticated;
 
 create trigger on_auth_user_created
   after insert on auth.users
@@ -54,6 +56,8 @@ create table public.favorites (
   primary key (user_id, listing_id)
 );
 
+create index favorites_listing_idx on public.favorites (listing_id);
+
 create table public.threads (
   id uuid primary key default gen_random_uuid(),
   listing_id uuid not null references public.listings (id) on delete cascade,
@@ -74,6 +78,7 @@ create table public.messages (
   created_at timestamptz not null default now()
 );
 create index messages_thread_idx on public.messages (thread_id, created_at);
+create index messages_sender_idx on public.messages (sender_id);
 
 ------------------------------------------------------------------------------
 -- Moderation (App Store requires report and block for user generated content)
@@ -86,6 +91,8 @@ create table public.blocks (
   check (blocker_id <> blocked_id)
 );
 
+create index blocks_blocked_idx on public.blocks (blocked_id);
+
 create table public.reports (
   id uuid primary key default gen_random_uuid(),
   reporter_id uuid not null default auth.uid() references public.profiles (id) on delete cascade,
@@ -95,6 +102,10 @@ create table public.reports (
   created_at timestamptz not null default now(),
   check (listing_id is not null or reported_user_id is not null)
 );
+
+create index reports_reporter_idx on public.reports (reporter_id);
+create index reports_listing_idx on public.reports (listing_id);
+create index reports_reported_user_idx on public.reports (reported_user_id);
 
 ------------------------------------------------------------------------------
 -- Row level security
@@ -111,33 +122,33 @@ alter table public.reports   enable row level security;
 create policy "profiles are readable" on public.profiles
   for select to anon, authenticated using (true);
 create policy "edit own profile" on public.profiles
-  for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
+  for update to authenticated using (id = (select auth.uid())) with check (id = (select auth.uid()));
 
 -- Listings: anyone can browse, except sellers you blocked. Only the seller writes.
 create policy "browse listings" on public.listings
   for select to anon, authenticated
   using (not exists (
     select 1 from public.blocks b
-    where b.blocker_id = auth.uid() and b.blocked_id = listings.seller_id));
+    where b.blocker_id = (select auth.uid()) and b.blocked_id = listings.seller_id));
 create policy "post own listings" on public.listings
-  for insert to authenticated with check (seller_id = auth.uid());
+  for insert to authenticated with check (seller_id = (select auth.uid()));
 create policy "edit own listings" on public.listings
-  for update to authenticated using (seller_id = auth.uid()) with check (seller_id = auth.uid());
+  for update to authenticated using (seller_id = (select auth.uid())) with check (seller_id = (select auth.uid()));
 create policy "delete own listings" on public.listings
-  for delete to authenticated using (seller_id = auth.uid());
+  for delete to authenticated using (seller_id = (select auth.uid()));
 
 -- Favorites: private to you.
 create policy "own favorites" on public.favorites
-  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+  for all to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 
 -- Threads: only the buyer and the seller can see them. A buyer starts a thread
 -- with the real seller of the listing.
 create policy "see own threads" on public.threads
-  for select to authenticated using (auth.uid() in (buyer_id, seller_id));
+  for select to authenticated using ((select auth.uid()) in (buyer_id, seller_id));
 create policy "start thread as buyer" on public.threads
   for insert to authenticated
   with check (
-    buyer_id = auth.uid()
+    buyer_id = (select auth.uid())
     and seller_id = (select l.seller_id from public.listings l where l.id = listing_id));
 
 -- Messages: only participants can read or send, and only as themselves.
@@ -145,23 +156,23 @@ create policy "read messages in my threads" on public.messages
   for select to authenticated
   using (exists (
     select 1 from public.threads t
-    where t.id = messages.thread_id and auth.uid() in (t.buyer_id, t.seller_id)));
+    where t.id = messages.thread_id and (select auth.uid()) in (t.buyer_id, t.seller_id)));
 create policy "send messages in my threads" on public.messages
   for insert to authenticated
   with check (
-    sender_id = auth.uid()
+    sender_id = (select auth.uid())
     and exists (
       select 1 from public.threads t
-      where t.id = messages.thread_id and auth.uid() in (t.buyer_id, t.seller_id)));
+      where t.id = messages.thread_id and (select auth.uid()) in (t.buyer_id, t.seller_id)));
 
 -- Blocks: private to you.
 create policy "own blocks" on public.blocks
-  for all to authenticated using (blocker_id = auth.uid()) with check (blocker_id = auth.uid());
+  for all to authenticated using (blocker_id = (select auth.uid())) with check (blocker_id = (select auth.uid()));
 
 -- Reports: you can file them, nobody can read them through the app API.
 -- Review them in the Supabase dashboard (Table editor, reports).
 create policy "file reports" on public.reports
-  for insert to authenticated with check (reporter_id = auth.uid());
+  for insert to authenticated with check (reporter_id = (select auth.uid()));
 
 ------------------------------------------------------------------------------
 -- Photo storage: public read, you can only write inside your own folder
@@ -171,14 +182,12 @@ values ('listing-photos', 'listing-photos', true, 5242880,
         array['image/jpeg', 'image/png', 'image/heic'])
 on conflict (id) do nothing;
 
-create policy "photos are readable" on storage.objects
-  for select to anon, authenticated using (bucket_id = 'listing-photos');
 create policy "upload to own folder" on storage.objects
   for insert to authenticated
-  with check (bucket_id = 'listing-photos' and (storage.foldername(name))[1] = auth.uid()::text);
+  with check (bucket_id = 'listing-photos' and (storage.foldername(name))[1] = (select auth.uid())::text);
 create policy "delete from own folder" on storage.objects
   for delete to authenticated
-  using (bucket_id = 'listing-photos' and (storage.foldername(name))[1] = auth.uid()::text);
+  using (bucket_id = 'listing-photos' and (storage.foldername(name))[1] = (select auth.uid())::text);
 
 ------------------------------------------------------------------------------
 -- In-app account deletion (App Store requires it)
