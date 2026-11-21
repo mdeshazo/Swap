@@ -125,6 +125,19 @@ struct SignInView: View {
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
                 }
+                if store.usesBackend {
+                    Section {
+                        Button {
+                            google()
+                        } label: {
+                            Label("Continue with Google", systemImage: "g.circle.fill")
+                                .frame(maxWidth: .infinity, minHeight: 32)
+                        }
+                        .disabled(busy)
+                    } footer: {
+                        Text("Or use your email below.")
+                    }
+                }
                 Section {
                     if creating {
                         TextField("Name", text: $name)
@@ -172,6 +185,24 @@ struct SignInView: View {
             .onAppear { focus = creating ? .name : .email }
         }
         .presentationDetents([.medium, .large])
+    }
+
+    private func google() {
+        guard !busy else { return }
+        busy = true
+        errorText = nil
+        Task {
+            defer { busy = false }
+            do {
+                try await store.signInWithGoogle()
+                dismiss()
+                onDone?()
+            } catch is CancellationError {
+                // The person closed the Google sheet. Nothing to show.
+            } catch {
+                errorText = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+            }
+        }
     }
 
     private func submit() {

@@ -19,6 +19,9 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleURLTypes:
+          - CFBundleURLName: com.example.swap
+            CFBundleURLSchemes: [swap]
         SupabaseURL: $(SUPABASE_URL)
         SupabaseAnonKey: $(SUPABASE_ANON_KEY)
     settings:

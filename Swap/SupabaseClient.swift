@@ -106,7 +106,10 @@ enum JSON {
 // MARK: - Wire types
 
 private struct AuthUser: Decodable {
-    struct Meta: Decodable { var name: String? }
+    struct Meta: Decodable {
+        var name: String?
+        var fullName: String?
+    }
     var id: UUID
     var email: String?
     var userMetadata: Meta?
@@ -217,6 +220,28 @@ actor SupabaseClient {
         return s
     }
 
+    /// Address of the provider sign in page (Google). Uses the PKCE code flow.
+    func oauthURL(provider: String, redirectTo: String, challenge: String) -> URL {
+        var comps = URLComponents(url: config.url.appending(path: "auth/v1/authorize"), resolvingAgainstBaseURL: false)!
+        comps.queryItems = [
+            .init(name: "provider", value: provider),
+            .init(name: "redirect_to", value: redirectTo),
+            .init(name: "code_challenge", value: challenge),
+            .init(name: "code_challenge_method", value: "s256"),
+        ]
+        return comps.url!
+    }
+
+    func exchangeCode(_ code: String, verifier: String) async throws -> Session {
+        let body = try JSONSerialization.data(withJSONObject: ["auth_code": code, "code_verifier": verifier])
+        let data = try await send("POST", "auth/v1/token", query: [.init(name: "grant_type", value: "pkce")],
+                                  body: body, authed: false)
+        let resp = try JSON.decoder.decode(AuthResponse.self, from: data)
+        guard let s = makeSession(resp, fallbackName: "") else { throw BackendError.signedOut }
+        setSession(s)
+        return s
+    }
+
     func signOut() async {
         _ = try? await send("POST", "auth/v1/logout", retry: false)
         setSession(nil)
@@ -240,7 +265,8 @@ actor SupabaseClient {
 
     private func makeSession(_ r: AuthResponse, fallbackName: String) -> Session? {
         guard let access = r.accessToken, let refresh = r.refreshToken, let user = r.user else { return nil }
-        let name = user.userMetadata?.name ?? fallbackName
+        var name = user.userMetadata?.name ?? user.userMetadata?.fullName ?? fallbackName
+        if name.isEmpty { name = user.email?.split(separator: "@").first.map(String.init) ?? "" }
         return Session(accessToken: access, refreshToken: refresh,
                        expiresAt: Date().addingTimeInterval(r.expiresIn ?? 3600),
                        userID: user.id, email: user.email ?? "", name: name)

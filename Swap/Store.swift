@@ -125,6 +125,24 @@ final class Store {
         await refresh()
     }
 
+    func signInWithGoogle() async throws {
+        guard let backend else { return }
+        let pkce = PKCE()
+        let url = await backend.oauthURL(provider: "google", redirectTo: "swap://auth-callback",
+                                         challenge: pkce.challenge)
+        let auth = WebAuth()
+        let callback = try await auth.start(url: url, scheme: "swap")
+        let items = URLComponents(url: callback, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        guard let code = items.first(where: { $0.name == "code" })?.value else {
+            let reason = items.first(where: { $0.name == "error_description" })?.value
+            throw BackendError.http(0, reason ?? "Google sign in didn't finish. Please try again.")
+        }
+        let s = try await backend.exchangeCode(code, verifier: pkce.verifier)
+        account = User(id: s.userID, name: s.name, email: s.email)
+        isSignedIn = true
+        await refresh()
+    }
+
     func signOut() {
         if let backend { Task { await backend.signOut() } }
         isSignedIn = false
