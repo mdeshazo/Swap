@@ -1,0 +1,30 @@
+"/Users/runner/work/Swap/Swap/Swap/AccountViews.swift":
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.d"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.dia"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.o"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.swiftdeps"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.swiftconstvalues"
+"/Users/runner/work/Swap/Swap/Swap/BrowseView.swift":
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.dia"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.swiftconstvalues"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.o"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.swiftdeps"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.d"
+"/Users/runner/work/Swap/Swap/Swap/AppleAuth.swift":
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.dia"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.d"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.swiftconstvalues"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.o"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.swiftdeps"
+"/Users/runner/work/Swap/Swap/Swap/Components.swift":
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Components.swiftconstvalues"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Components.dia"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Components.d"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Components.o"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Components.swiftdeps"
+"/Users/runner/work/Swap/Swap/Swap/GoogleAuth.swift":
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.swiftconstvalues"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.o"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.dia"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.d"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.swiftdeps"

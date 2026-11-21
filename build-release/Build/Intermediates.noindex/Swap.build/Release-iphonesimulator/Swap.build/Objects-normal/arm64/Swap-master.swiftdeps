@@ -1,0 +1,19 @@
+version: "Apple Swift version 6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)"
+options: "18cd6d68d673bc8a4c7cbc7c1bc83530a3896a0651577d1292146041ba5fbbfe"
+build_start_time: [1795289199, 762861000]
+build_end_time: [1795289225, 583437000]
+inputs:
+  "/Users/runner/work/Swap/Swap/Swap/AccountViews.swift": [1795289104, 543457374]
+  "/Users/runner/work/Swap/Swap/Swap/AppleAuth.swift": [1795289104, 543766499]
+  "/Users/runner/work/Swap/Swap/Swap/BrowseView.swift": [1795289104, 544826458]
+  "/Users/runner/work/Swap/Swap/Swap/Components.swift": [1795289104, 545225208]
+  "/Users/runner/work/Swap/Swap/Swap/GoogleAuth.swift": [1795289104, 545569208]
+  "/Users/runner/work/Swap/Swap/Swap/ListingDetailView.swift": [1795289104, 545818791]
+  "/Users/runner/work/Swap/Swap/Swap/MessagesViews.swift": [1795289104, 546084541]
+  "/Users/runner/work/Swap/Swap/Swap/Models.swift": [1795289104, 546395333]
+  "/Users/runner/work/Swap/Swap/Swap/SellView.swift": [1795289104, 546577374]
+  "/Users/runner/work/Swap/Swap/Swap/Store.swift": [1795289104, 546706583]
+  "/Users/runner/work/Swap/Swap/Swap/SupabaseClient.swift": [1795289104, 546876374]
+  "/Users/runner/work/Swap/Swap/Swap/SwapApp.swift": [1795289104, 547008083]
+  ? "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/DerivedSources/GeneratedAssetSymbols.swift"
+  : [1795289196, 858597708]

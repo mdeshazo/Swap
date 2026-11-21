@@ -1,0 +1,24 @@
+"/Users/runner/work/Swap/Swap/Swap/Store.swift":
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Store.o"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Store.dia"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Store.swiftconstvalues"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Store.d"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/Store.swiftdeps"
+"/Users/runner/work/Swap/Swap/Swap/SwapApp.swift":
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.o"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.d"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.swiftconstvalues"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.swiftdeps"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.dia"
+"/Users/runner/work/Swap/Swap/Swap/SupabaseClient.swift":
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.swiftdeps"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.o"
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.d"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.dia"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.swiftconstvalues"
+"/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/DerivedSources/GeneratedAssetSymbols.swift":
+  dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.d"
+  const-values: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues"
+  swift-dependencies: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps"
+  object: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  diagnostics: "/Users/runner/work/Swap/Swap/build/Build/Intermediates.noindex/Swap.build/Debug-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.dia"

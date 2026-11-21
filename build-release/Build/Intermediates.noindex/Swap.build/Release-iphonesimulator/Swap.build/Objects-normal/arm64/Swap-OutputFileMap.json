@@ -1,0 +1,75 @@
+{
+  "" : {
+    "const-values" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master.swiftconstvalues",
+    "dependencies" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master.d",
+    "diagnostics" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master.dia",
+    "emit-module-dependencies" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master-emit-module.dia",
+    "swift-dependencies" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Swap-master.swiftdeps"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/AccountViews.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AccountViews.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/AppleAuth.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/AppleAuth.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/BrowseView.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/BrowseView.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/Components.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Components.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Components.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Components.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/GoogleAuth.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GoogleAuth.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/ListingDetailView.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/ListingDetailView.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/ListingDetailView.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/ListingDetailView.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/MessagesViews.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/MessagesViews.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/MessagesViews.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/MessagesViews.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/Models.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Models.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Models.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Models.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/SellView.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SellView.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SellView.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SellView.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/Store.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Store.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Store.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/Store.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/SupabaseClient.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SupabaseClient.o"
+  },
+  "/Users/runner/work/Swap/Swap/Swap/SwapApp.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/SwapApp.o"
+  },
+  "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/runner/work/Swap/Swap/build-release/Build/Intermediates.noindex/Swap.build/Release-iphonesimulator/Swap.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}
