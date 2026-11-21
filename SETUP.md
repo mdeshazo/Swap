@@ -7,7 +7,7 @@
 Demo mode keeps everything on the phone and fakes seller replies.
 
 ## Turn on the real backend (Supabase)
-The project `liwwmqyarwlfqleskzpp` is already set up and `Config/Secrets.xcconfig` is filled in on this machine (git ignores it). Skip to step 4 of "Turn on Google sign in" below. For a new project, follow these steps.
+The project `liwwmqyarwlfqleskzpp` is already set up and `Config/Secrets.xcconfig` is filled in on this machine (git ignores it). On another machine, copy the two values into your own Config/Secrets.xcconfig. For a brand new project, follow the steps below.
 1. Create a Supabase project (supabase.com).
 2. SQL Editor: paste all of `supabase/schema.sql` and run it once.
 3. Authentication, Providers, Email: decide whether to require email confirmation.
