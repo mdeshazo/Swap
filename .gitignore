@@ -4,8 +4,7 @@ DerivedData/
 *.xcodeproj/
 xcuserdata/
 .swiftpm/
-# Secrets: never commit
-Secrets.xcconfig
+# Never commit real secrets (service_role keys, passwords)
 *.env
 .env*
 
