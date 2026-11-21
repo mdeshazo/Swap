@@ -38,6 +38,22 @@ struct RootView: View {
                 .tabItem { Label("Profile", systemImage: "person.crop.circle") }
                 .tag(AppTab.profile)
         }
+        .alert("Something went wrong", isPresented: Binding(
+            get: { store.errorMessage != nil },
+            set: { if !$0 { store.errorMessage = nil } })
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(store.errorMessage ?? "")
+        }
+        .alert("Done", isPresented: Binding(
+            get: { store.noticeMessage != nil },
+            set: { if !$0 { store.noticeMessage = nil } })
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(store.noticeMessage ?? "")
+        }
     }
 }
 

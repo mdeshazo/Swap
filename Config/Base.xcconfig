@@ -1,0 +1,4 @@
+// Empty values mean demo mode (local data only). Real values go in Secrets.xcconfig.
+SUPABASE_URL =
+SUPABASE_ANON_KEY =
+#include? "Secrets.xcconfig"

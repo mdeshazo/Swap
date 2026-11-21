@@ -1,5 +1,7 @@
 import SwiftUI
 
+private let reportReasons = ["Spam or scam", "Prohibited item", "Offensive content", "Something else"]
+
 struct ListingDetailView: View {
     let listingID: UUID
     @Environment(Store.self) private var store
@@ -7,6 +9,9 @@ struct ListingDetailView: View {
     @State private var openThread: UUID?
     @State private var showSignIn = false
     @State private var confirmDelete = false
+    @State private var showReport = false
+    @State private var confirmBlock = false
+    @State private var isOpeningChat = false
 
     var body: some View {
         if let listing = store.listing(listingID) {
@@ -21,7 +26,7 @@ struct ListingDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 TabView {
-                    ForEach(0..<max(1, listing.photoFiles.count), id: \.self) { i in
+                    ForEach(0..<max(1, listing.photoCount), id: \.self) { i in
                         ListingImage(listing: listing, index: i)
                     }
                 }
@@ -41,7 +46,7 @@ struct ListingDetailView: View {
                     Text(listing.title).font(.title3)
                     Text("\(listing.condition.title) · \(listing.category.title)")
                         .font(.subheadline).foregroundStyle(.secondary)
-                    Text("\(listing.locationName) · \(listing.distanceText) · Posted \(listing.createdAt.formatted(.relative(presentation: .named)))")
+                    Text("\(listing.placeText) · Posted \(listing.createdAt.formatted(.relative(presentation: .named)))")
                         .font(.footnote).foregroundStyle(.secondary)
                 }
                 .padding(.horizontal)
@@ -80,6 +85,17 @@ struct ListingDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ShareLink(item: "\(listing.title) for \(listing.priceText) on Swap")
             }
+            if !store.isMine(listing) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button("Report listing", systemImage: "flag") { showReport = true }
+                        Button("Block seller", systemImage: "hand.raised", role: .destructive) { confirmBlock = true }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .accessibilityLabel("More")
+                }
+            }
         }
         .safeAreaInset(edge: .bottom) { actionBar(listing) }
         .navigationDestination(item: $openThread) { id in ChatView(threadID: id) }
@@ -89,6 +105,19 @@ struct ListingDetailView: View {
                 store.delete(listing.id)
                 dismiss()
             }
+        }
+        .confirmationDialog("Why are you reporting this?", isPresented: $showReport, titleVisibility: .visible) {
+            ForEach(reportReasons, id: \.self) { reason in
+                Button(reason) { store.report(listing: listing, reason: reason) }
+            }
+        }
+        .confirmationDialog("Block \(listing.sellerName)?", isPresented: $confirmBlock, titleVisibility: .visible) {
+            Button("Block", role: .destructive) {
+                store.block(listing.sellerID)
+                dismiss()
+            }
+        } message: {
+            Text("You won't see their listings or messages.")
         }
     }
 
@@ -104,7 +133,11 @@ struct ListingDetailView: View {
                     .buttonStyle(.bordered)
             } else {
                 Button {
-                    store.toggleSaved(listing.id)
+                    if store.usesBackend && store.currentUser == nil {
+                        showSignIn = true
+                    } else {
+                        store.toggleSaved(listing.id)
+                    }
                 } label: {
                     Image(systemName: store.saved.contains(listing.id) ? "heart.fill" : "heart")
                         .frame(minWidth: 44, minHeight: 44)
@@ -114,20 +147,35 @@ struct ListingDetailView: View {
                 .accessibilityLabel(store.saved.contains(listing.id) ? "Remove from saved" : "Save")
 
                 Button {
-                    if store.currentUser == nil {
-                        showSignIn = true
-                    } else {
-                        openThread = store.thread(for: listing).id
-                    }
+                    message(listing)
                 } label: {
-                    Text("Message seller").frame(maxWidth: .infinity, minHeight: 44)
+                    Group {
+                        if isOpeningChat { ProgressView() } else { Text("Message seller") }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(listing.isSold)
+                .disabled(listing.isSold || isOpeningChat)
             }
         }
         .padding()
         .background(.bar)
+    }
+
+    private func message(_ listing: Listing) {
+        guard store.currentUser != nil else {
+            showSignIn = true
+            return
+        }
+        isOpeningChat = true
+        Task {
+            defer { isOpeningChat = false }
+            do {
+                openThread = try await store.openThread(for: listing)
+            } catch {
+                store.show(error)
+            }
+        }
     }
 }
 

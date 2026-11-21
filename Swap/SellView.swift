@@ -13,6 +13,7 @@ struct SellView: View {
     @State private var photoData: [Data] = []
     @State private var showSignIn = false
     @State private var showPosted = false
+    @State private var isPosting = false
 
     private var price: Double? {
         let cleaned = priceText.replacingOccurrences(of: ",", with: "").trimmingCharacters(in: .whitespaces)
@@ -70,9 +71,16 @@ struct SellView: View {
                     TextField("Neighborhood or city", text: $location)
                 }
                 Section {
-                    Button("Post listing") { post() }
-                        .frame(maxWidth: .infinity)
-                        .disabled(!canPost)
+                    Button {
+                        post()
+                    } label: {
+                        if isPosting {
+                            ProgressView().frame(maxWidth: .infinity)
+                        } else {
+                            Text("Post listing").frame(maxWidth: .infinity)
+                        }
+                    }
+                    .disabled(!canPost || isPosting)
                 } footer: {
                     if store.currentUser == nil {
                         Text("You'll create a free account when you post.")
@@ -100,19 +108,30 @@ struct SellView: View {
     }
 
     private func post() {
-        guard canPost, let price else { return }
+        guard canPost, let price, !isPosting else { return }
         guard store.currentUser != nil else {
             showSignIn = true
             return
         }
-        store.addListing(title: title.trimmingCharacters(in: .whitespaces), price: price,
-                         category: category, condition: condition,
-                         details: details.trimmingCharacters(in: .whitespacesAndNewlines),
-                         location: location.trimmingCharacters(in: .whitespaces), photos: photoData)
-        title = ""; priceText = ""; details = ""; location = ""
-        category = .other; condition = .good
-        pickerItems = []; photoData = []
-        showPosted = true
+        isPosting = true
+        let cleanTitle = title.trimmingCharacters(in: .whitespaces)
+        let cleanDetails = details.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanLocation = location.trimmingCharacters(in: .whitespaces)
+        let photos = photoData
+        let cat = category, cond = condition
+        Task {
+            defer { isPosting = false }
+            do {
+                try await store.addListing(title: cleanTitle, price: price, category: cat, condition: cond,
+                                           details: cleanDetails, location: cleanLocation, photos: photos)
+                title = ""; priceText = ""; details = ""; location = ""
+                category = .other; condition = .good
+                pickerItems = []; photoData = []
+                showPosted = true
+            } catch {
+                store.show(error)
+            }
+        }
     }
 }
 

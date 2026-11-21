@@ -51,6 +51,7 @@ struct Listing: Identifiable, Codable, Hashable {
     var sellerID: UUID
     var sellerName: String
     var photoFiles: [String] = []
+    var photoURLs: [String]? = nil
     var createdAt = Date()
     var isSold = false
 
@@ -59,8 +60,17 @@ struct Listing: Identifiable, Codable, Hashable {
         return price.formatted(.currency(code: "USD").precision(.fractionLength(0...2)))
     }
 
+    var remotePhotos: [String] { photoURLs ?? [] }
+    var photoCount: Int { max(photoFiles.count, remotePhotos.count) }
+
+    /// Empty when the distance is unknown (real backend listings have no location yet).
     var distanceText: String {
-        distanceMiles < 1 ? "Nearby" : "\(Int(distanceMiles.rounded())) mi"
+        if distanceMiles <= 0 { return "" }
+        return distanceMiles < 1 ? "Nearby" : "\(Int(distanceMiles.rounded())) mi"
+    }
+
+    var placeText: String {
+        distanceText.isEmpty ? locationName : "\(locationName) · \(distanceText)"
     }
 }
 
@@ -77,6 +87,7 @@ struct ChatThread: Identifiable, Codable, Hashable {
     var listingTitle: String
     var otherName: String
     var messages: [ChatMessage] = []
+    var otherUserID: UUID? = nil
 }
 
 enum Sort: String, CaseIterable, Identifiable {

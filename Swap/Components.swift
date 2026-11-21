@@ -10,7 +10,7 @@ enum PhotoStorage {
         return d
     }
 
-    static func save(_ data: Data) -> String? {
+    static func compressedJPEG(_ data: Data) -> Data? {
         guard let image = UIImage(data: data) else { return nil }
         let longest = max(image.size.width, image.size.height)
         guard longest > 0 else { return nil }
@@ -21,7 +21,11 @@ enum PhotoStorage {
         let resized = UIGraphicsImageRenderer(size: size, format: format).image { _ in
             image.draw(in: CGRect(origin: .zero, size: size))
         }
-        guard let jpeg = resized.jpegData(compressionQuality: 0.75) else { return nil }
+        return resized.jpegData(compressionQuality: 0.75)
+    }
+
+    static func save(_ data: Data) -> String? {
+        guard let jpeg = compressedJPEG(data) else { return nil }
         let name = UUID().uuidString + ".jpg"
         do {
             try jpeg.write(to: dir.appending(path: name))
@@ -59,14 +63,30 @@ struct ListingImage: View {
                     Image(uiImage: ui)
                         .resizable()
                         .scaledToFill()
+                } else if index < listing.remotePhotos.count,
+                          let url = URL(string: listing.remotePhotos[index]) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().scaledToFill()
+                        case .empty:
+                            ProgressView()
+                        default:
+                            placeholder
+                        }
+                    }
                 } else {
-                    Image(systemName: listing.category.symbol)
-                        .font(.largeTitle)
-                        .foregroundStyle(.tertiary)
+                    placeholder
                 }
             }
             .clipped()
             .accessibilityHidden(true)
+    }
+
+    private var placeholder: some View {
+        Image(systemName: listing.category.symbol)
+            .font(.largeTitle)
+            .foregroundStyle(.tertiary)
     }
 }
 
@@ -101,7 +121,7 @@ struct ListingCard: View {
             Text(listing.title)
                 .font(.subheadline)
                 .lineLimit(1)
-            Text("\(listing.locationName) · \(listing.distanceText)")
+            Text(listing.placeText)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)

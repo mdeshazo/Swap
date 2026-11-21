@@ -46,7 +46,7 @@ struct BrowseView: View {
             .navigationDestination(for: UUID.self) { id in
                 ListingDetailView(listingID: id)
             }
-            .refreshable { try? await Task.sleep(for: .milliseconds(400)) }
+            .refreshable { await store.refresh() }
         }
     }
 
@@ -98,6 +98,7 @@ struct BrowseView: View {
 
 struct FilterSheet: View {
     @Binding var filters: Filters
+    @Environment(Store.self) private var store
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -105,7 +106,7 @@ struct FilterSheet: View {
             Form {
                 Section("Sort") {
                     Picker("Sort by", selection: $filters.sort) {
-                        ForEach(Sort.allCases) { Text($0.title).tag($0) }
+                        ForEach(Sort.allCases.filter { store.usesBackend ? $0 != .closest : true }) { Text($0.title).tag($0) }
                     }
                 }
                 Section("Category and condition") {
@@ -126,10 +127,12 @@ struct FilterSheet: View {
                     }
                     .keyboardType(.decimalPad)
                 }
-                Section("Distance") {
-                    VStack(alignment: .leading) {
-                        Text(filters.maxDistance >= 100 ? "Any distance" : "Within \(Int(filters.maxDistance)) miles")
-                        Slider(value: $filters.maxDistance, in: 1...100, step: 1)
+                if !store.usesBackend {
+                    Section("Distance") {
+                        VStack(alignment: .leading) {
+                            Text(filters.maxDistance >= 100 ? "Any distance" : "Within \(Int(filters.maxDistance)) miles")
+                            Slider(value: $filters.maxDistance, in: 1...100, step: 1)
+                        }
                     }
                 }
             }
@@ -148,5 +151,6 @@ struct FilterSheet: View {
 }
 
 #Preview {
-    BrowseView().environment(Store(inMemory: true))
+    let store = Store(inMemory: true)
+    return BrowseView().environment(store)
 }
