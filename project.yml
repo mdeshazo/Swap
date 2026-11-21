@@ -27,6 +27,10 @@ targets:
             CFBundleURLSchemes: [swap]
         SupabaseURL: $(SUPABASE_URL)
         SupabaseAnonKey: $(SUPABASE_ANON_KEY)
+    entitlements:
+      path: Config/Swap.entitlements
+      properties:
+        com.apple.developer.applesignin: [Default]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.swap

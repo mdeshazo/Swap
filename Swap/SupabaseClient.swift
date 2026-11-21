@@ -223,6 +223,31 @@ actor SupabaseClient {
         return s
     }
 
+    /// Native Sign in with Apple: trade Apple's identity token for a Supabase session.
+    func signInWithIDToken(provider: String, idToken: String, nonce: String, fullName: String?) async throws -> Session {
+        let body = try JSONSerialization.data(withJSONObject: ["provider": provider, "id_token": idToken, "nonce": nonce])
+        let data = try await send("POST", "auth/v1/token", query: [.init(name: "grant_type", value: "id_token")],
+                                  body: body, authed: false)
+        let resp = try JSON.decoder.decode(AuthResponse.self, from: data)
+        guard let s = makeSession(resp, fallbackName: "") else { throw BackendError.signedOut }
+        setSession(s)
+        // Apple only shares the name the first time, so save it now.
+        let name = fullName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !name.isEmpty { try? await saveName(name, userID: s.userID) }
+        return session ?? s
+    }
+
+    private func saveName(_ name: String, userID: UUID) async throws {
+        let meta: [String: Any] = ["data": ["name": name]]
+        _ = try await send("PUT", "auth/v1/user", body: try JSONSerialization.data(withJSONObject: meta))
+        _ = try await send("PATCH", "rest/v1/profiles",
+                           query: [.init(name: "id", value: "eq.\(userID.uuidString.lowercased())")],
+                           body: try JSONSerialization.data(withJSONObject: ["name": name]),
+                           extra: ["Prefer": "return=minimal"])
+        session?.name = name
+        Keychain.save(session)
+    }
+
     /// Address of the provider sign in page (Google). Uses the PKCE code flow.
     func oauthURL(provider: String, redirectTo: String, challenge: String) -> URL {
         var comps = URLComponents(url: config.url.appending(path: "auth/v1/authorize"), resolvingAgainstBaseURL: false)!
@@ -269,7 +294,9 @@ actor SupabaseClient {
     private func makeSession(_ r: AuthResponse, fallbackName: String) -> Session? {
         guard let access = r.accessToken, let refresh = r.refreshToken, let user = r.user else { return nil }
         var name = user.userMetadata?.name ?? user.userMetadata?.fullName ?? fallbackName
-        if name.isEmpty { name = user.email?.split(separator: "@").first.map(String.init) ?? "" }
+        if name.isEmpty, let email = user.email, !email.hasSuffix("privaterelay.appleid.com") {
+            name = email.split(separator: "@").first.map(String.init) ?? ""
+        }
         return Session(accessToken: access, refreshToken: refresh,
                        expiresAt: Date().addingTimeInterval(r.expiresIn ?? 3600),
                        userID: user.id, email: user.email ?? "", name: name)

@@ -28,9 +28,15 @@ The project `liwwmqyarwlfqleskzpp` is already set up and `Config/Secrets.xcconfi
 Email and password keeps working beside it. If someone signs up with email and later uses Google
 with the same address, Supabase links them to one account by default.
 
+## Turn on Sign in with Apple
+The app has the Apple button (native flow, no web redirect). Once you have your bundle ID:
+1. Supabase, Authentication, Providers, Apple: switch it on and put your **bundle ID** in "Client IDs".
+   The native flow needs no secret key.
+2. Apple developer site, Identifiers, your app's ID: make sure "Sign in with Apple" is ticked. Automatic
+   signing in the TestFlight workflow usually does this for you.
+3. To try it, use a real iPhone through TestFlight. The simulator needs an Apple ID signed in.
+
 ## Before App Store submission
-- Apple rule 4.8: because the app offers Google login, it must also offer Sign in with Apple (or an
-  equivalent privacy first login). Add Sign in with Apple before you submit.
 - Replace the placeholder Google button icon with Google's official "G" logo and follow their
   branding rules.
 - Add a Terms of Use and Privacy Policy, link them in the app and in App Store Connect.

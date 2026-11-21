@@ -143,6 +143,14 @@ final class Store {
         await refresh()
     }
 
+    func signInWithApple(idToken: String, nonce: String, fullName: String?) async throws {
+        guard let backend else { return }
+        let s = try await backend.signInWithIDToken(provider: "apple", idToken: idToken, nonce: nonce, fullName: fullName)
+        account = User(id: s.userID, name: s.name, email: s.email)
+        isSignedIn = true
+        await refresh()
+    }
+
     func signInWithGoogle() async throws {
         guard let backend else { return }
         let pkce = PKCE()

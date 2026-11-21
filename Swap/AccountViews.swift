@@ -1,3 +1,4 @@
+import AuthenticationServices
 import SwiftUI
 
 struct SavedView: View {
@@ -110,6 +111,7 @@ struct SignInView: View {
     @State private var password = ""
     @State private var busy = false
     @State private var errorText: String?
+    @State private var appleNonce = ""
     @FocusState private var focus: Field?
     private enum Field { case name, email, password }
 
@@ -132,6 +134,16 @@ struct SignInView: View {
                 }
                 if store.usesBackend {
                     Section {
+                        SignInWithAppleButton(.continue) { request in
+                            appleNonce = Nonce.random()
+                            request.requestedScopes = [.fullName, .email]
+                            request.nonce = Nonce.sha256(appleNonce)
+                        } onCompletion: { result in
+                            handleApple(result)
+                        }
+                        .signInWithAppleButtonStyle(.black)
+                        .frame(height: 48)
+                        .disabled(busy)
                         Button {
                             google()
                         } label: {
@@ -190,6 +202,35 @@ struct SignInView: View {
             .onAppear { focus = creating ? .name : .email }
         }
         .presentationDetents([.medium, .large])
+    }
+
+    private func handleApple(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .failure(let error):
+            if (error as? ASAuthorizationError)?.code == .canceled { return }
+            errorText = error.localizedDescription
+        case .success(let auth):
+            guard let cred = auth.credential as? ASAuthorizationAppleIDCredential,
+                  let tokenData = cred.identityToken,
+                  let token = String(data: tokenData, encoding: .utf8) else {
+                errorText = "Apple sign in didn't return a token. Please try again."
+                return
+            }
+            let name = PersonNameComponentsFormatter().string(from: cred.fullName ?? PersonNameComponents())
+            let nonce = appleNonce
+            busy = true
+            errorText = nil
+            Task {
+                defer { busy = false }
+                do {
+                    try await store.signInWithApple(idToken: token, nonce: nonce, fullName: name)
+                    dismiss()
+                    onDone?()
+                } catch {
+                    errorText = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+                }
+            }
+        }
     }
 
     private func google() {
