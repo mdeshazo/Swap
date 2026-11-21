@@ -3,6 +3,7 @@ import SwiftUI
 struct InboxView: View {
     @Environment(Store.self) private var store
     @State private var showSignIn = false
+    @State private var path = NavigationPath()
 
     private var sorted: [ChatThread] {
         store.threads.sorted {
@@ -11,7 +12,7 @@ struct InboxView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Group {
                 if store.usesBackend && store.currentUser == nil {
                     ContentUnavailableView {
@@ -38,6 +39,14 @@ struct InboxView: View {
             .navigationTitle("Inbox")
             .navigationDestination(for: UUID.self) { ChatView(threadID: $0) }
             .sheet(isPresented: $showSignIn) { SignInView() }
+            .task {
+                #if DEBUG
+                if UserDefaults.standard.bool(forKey: "demoChat"), let id = store.threads.first?.id {
+                    try? await Task.sleep(for: .milliseconds(600))
+                    path.append(id)
+                }
+                #endif
+            }
         }
     }
 

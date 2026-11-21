@@ -1,0 +1,62 @@
+name: Screenshots
+
+# Builds the app on a GitHub Mac, runs it in an iPhone simulator, and pushes
+# screenshots plus a build log to the "screenshots" branch. Run it by hand:
+# Actions tab, Screenshots, Run workflow.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  shots:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen
+
+      - name: Pick an iPhone simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          d = json.load(sys.stdin)["devices"]
+          for runtime, devs in sorted(d.items(), reverse=True):
+              if "iOS" not in runtime:
+                  continue
+              for x in devs:
+                  n = x["name"]
+                  if n.startswith("iPhone 1") and "Pro" not in n and "Plus" not in n and "Air" not in n:
+                      print(x["udid"]); sys.exit()
+          ')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          echo "Simulator: $UDID"
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild -project Swap.xcodeproj -scheme Swap -destination "id=$UDID" \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO build 2>&1 | tee "$RUNNER_TEMP/build.log" | tail -40
+
+      - name: Capture screenshots
+        run: bash scripts/screenshots.sh
+
+      - name: Publish to screenshots branch
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/pub"
+          cp "$RUNNER_TEMP"/shots/*.png "$RUNNER_TEMP/pub/" 2>/dev/null || true
+          tail -n 400 "$RUNNER_TEMP/build.log" > "$RUNNER_TEMP/pub/build-tail.log" 2>/dev/null || true
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan screenshots-out
+          git rm -rf --quiet . || true
+          cp "$RUNNER_TEMP"/pub/* .
+          git add -A
+          git commit -m "Screenshots from run $GITHUB_RUN_ID"
+          git push -f origin HEAD:screenshots

@@ -5,6 +5,7 @@ struct BrowseView: View {
     @State private var query = ""
     @State private var filters = Filters()
     @State private var showFilters = false
+    @State private var path = NavigationPath()
 
     private var results: [Listing] {
         store.listings
@@ -13,7 +14,7 @@ struct BrowseView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     categoryChips
@@ -47,6 +48,14 @@ struct BrowseView: View {
                 ListingDetailView(listingID: id)
             }
             .refreshable { await store.refresh() }
+            .task {
+                #if DEBUG
+                if UserDefaults.standard.bool(forKey: "openFirstListing"), let id = results.first?.id {
+                    try? await Task.sleep(for: .milliseconds(600))
+                    path.append(id)
+                }
+                #endif
+            }
         }
     }
 

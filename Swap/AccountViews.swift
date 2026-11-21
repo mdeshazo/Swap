@@ -77,6 +77,11 @@ struct ProfileView: View {
                 }
             }
             .navigationTitle("Profile")
+            .task {
+                #if DEBUG
+                if UserDefaults.standard.bool(forKey: "showSignIn") { showSignIn = true }
+                #endif
+            }
             .navigationDestination(for: UUID.self) { ListingDetailView(listingID: $0) }
             .sheet(isPresented: $showSignIn) { SignInView() }
             .confirmationDialog("Sign out of Swap?", isPresented: $confirmSignOut, titleVisibility: .visible) {

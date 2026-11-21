@@ -6,6 +6,9 @@ import Security
 enum Backend {
     /// Returns nil (demo mode) unless SUPABASE_URL and SUPABASE_ANON_KEY were set in Config/Secrets.xcconfig.
     static func makeClient() -> SupabaseClient? {
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "demoMode") { return nil }
+        #endif
         let info = Bundle.main.infoDictionary
         guard let urlString = info?["SupabaseURL"] as? String,
               let key = info?["SupabaseAnonKey"] as? String,

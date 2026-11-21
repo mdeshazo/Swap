@@ -51,6 +51,24 @@ final class Store {
             listings = Store.seedListings()
             if persist { save() }
         }
+
+        #if DEBUG
+        // Launch switches for automated screenshots (see .github/workflows/screenshots.yml).
+        let defaults = UserDefaults.standard
+        if let name = defaults.string(forKey: "startTab") {
+            switch name {
+            case "sell": selectedTab = .sell
+            case "inbox": selectedTab = .inbox
+            case "saved": selectedTab = .saved
+            case "profile": selectedTab = .profile
+            default: selectedTab = .browse
+            }
+        }
+        if backend == nil, defaults.bool(forKey: "demoChat"), let first = listings.first {
+            let t = thread(for: first)
+            send("Is this still available?", in: t.id)
+        }
+        #endif
     }
 
     private func save() {
