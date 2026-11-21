@@ -43,6 +43,12 @@ jobs:
           xcodebuild -project Swap.xcodeproj -scheme Swap -destination "id=$UDID" \
             -derivedDataPath build CODE_SIGNING_ALLOWED=NO build 2>&1 | tee "$RUNNER_TEMP/build.log" | tail -40
 
+      - name: Release compile check (no signing)
+        run: |
+          set -o pipefail
+          xcodebuild -project Swap.xcodeproj -scheme Swap -destination "generic/platform=iOS Simulator" \
+            -configuration Release -derivedDataPath build-release CODE_SIGNING_ALLOWED=NO build 2>&1 | tail -15
+
       - name: Capture screenshots
         run: bash scripts/screenshots.sh
 
