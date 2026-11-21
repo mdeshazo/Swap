@@ -1,6 +1,10 @@
 .DS_Store
-*.xcodeproj
-xcuserdata/
-DerivedData/
 build/
-Swap/Secrets.swift
+DerivedData/
+*.xcodeproj/
+xcuserdata/
+.swiftpm/
+# Secrets: never commit
+Secrets.xcconfig
+*.env
+.env*
