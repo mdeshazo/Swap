@@ -284,7 +284,7 @@ actor SupabaseClient {
 
     func fetchListings() async throws -> [ListingRow] {
         let data = try await send("GET", "rest/v1/listings", query: [
-            .init(name: "select", value: "*,profiles(name)"),
+            .init(name: "select", value: "*,profiles!seller_id(name)"),
             .init(name: "order", value: "created_at.desc"),
             .init(name: "limit", value: "200"),
         ])
@@ -370,7 +370,7 @@ actor SupabaseClient {
     // MARK: Chat
 
     func fetchThreads(me: UUID) async throws -> [ChatThread] {
-        let select = "id,listing_id,buyer_id,seller_id,listings(title),buyer:profiles!buyer_id(name),seller:profiles!seller_id(name),messages(id,sender_id,body,created_at)"
+        let select = "id,listing_id,buyer_id,seller_id,listings!listing_id(title),buyer:profiles!buyer_id(name),seller:profiles!seller_id(name),messages(id,sender_id,body,created_at)"
         let data = try await send("GET", "rest/v1/threads", query: [
             .init(name: "select", value: select),
             .init(name: "order", value: "created_at.desc"),
